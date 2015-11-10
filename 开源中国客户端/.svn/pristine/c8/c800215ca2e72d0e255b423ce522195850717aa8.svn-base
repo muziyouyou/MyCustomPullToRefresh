@@ -1,0 +1,24 @@
+package com.itheima.oschina.ui.fragment;
+
+import android.graphics.Color;
+import android.view.View;
+import android.widget.TextView;
+
+import com.itheima.oschina.ui.fragment.base.BaseFragment;
+
+public class TestFragmentTwo extends BaseFragment{
+
+	@Override
+	protected View getSuccessView() {
+		TextView text=new  TextView(getActivity());
+		text.setText("abffrrgrgrgrgrgrgrgrgrgrga");
+		text.setTextSize(30);
+		text.setTextColor(Color.YELLOW);
+		return text;
+	}
+	@Override
+	protected Object requestData() {
+		String ok="ok";
+		return ok;
+	}
+}

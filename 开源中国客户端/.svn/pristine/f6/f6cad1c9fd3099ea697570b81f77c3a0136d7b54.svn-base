@@ -1,0 +1,83 @@
+package com.itheima.oschina.ui.fragment;
+
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
+
+import com.itheima.oschina.R;
+import com.itheima.oschina.ui.fragment.base.BaseFragment;
+import com.itheima.oschina.util.ToastUtil;
+
+public class DiscoverFtagment extends BaseFragment implements OnClickListener {
+
+	private View view;
+
+	@Override
+	protected View getSuccessView() {
+
+		view = View.inflate(getActivity(), R.layout.discover_fragment, null);
+		initView();
+		myClick();
+		return view;
+	}
+
+	@Override
+	protected Object requestData() {
+
+		return "1";
+	}
+
+	private void initView() {
+
+	}
+
+	private void myClick() {
+
+		LinearLayout discover_activity = (LinearLayout) view
+				.findViewById(R.id.discover_activity);
+		LinearLayout discover_find = (LinearLayout) view
+				.findViewById(R.id.discover_find);
+		LinearLayout discover_friends = (LinearLayout) view
+				.findViewById(R.id.discover_friends);
+		LinearLayout discover_scan = (LinearLayout) view
+				.findViewById(R.id.discover_scan);
+		LinearLayout discover_shake = (LinearLayout) view
+				.findViewById(R.id.discover_shake);
+
+		discover_activity.setOnClickListener(this);
+		discover_find.setOnClickListener(this);
+		discover_friends.setOnClickListener(this);
+		discover_scan.setOnClickListener(this);
+		discover_shake.setOnClickListener(this);
+
+	}
+
+	@Override
+	public void onClick(View v) {
+
+		switch (v.getId()) {
+		case R.id.discover_activity:
+			ToastUtil.showToast("discover_activity");
+			break;
+
+		case R.id.discover_find:
+			ToastUtil.showToast("discover_find");
+			break;
+
+		case R.id.discover_friends:
+			ToastUtil.showToast("discover_friends");
+			break;
+
+		case R.id.discover_scan:
+			ToastUtil.showToast("discover_scan");
+			break;
+
+		case R.id.discover_shake:
+			ToastUtil.showToast("discover_shake");
+			break;
+
+		}
+
+	}
+
+}

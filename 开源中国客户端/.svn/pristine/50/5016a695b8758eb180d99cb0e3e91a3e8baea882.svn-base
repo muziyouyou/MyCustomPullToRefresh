@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.itheima.oschina.ui.view.MyRelative xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_mian_window"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#33000000"
+    android:visibility="invisible" >
+
+    <LinearLayout
+        android:id="@+id/ll_window_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff"
+        android:orientation="vertical"
+        android:paddingBottom="100dp"
+        android:visibility="invisible" >
+
+        <Button
+            android:id="@+id/bt_mian_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="cancel"
+            android:text="关闭" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sajsaksajsaasjl"
+            android:textColor="#000000" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sajsaksajsaasjl"
+            android:textColor="#000000" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sajsaksajsaasjl"
+            android:textColor="#000000" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sajsaksajsaasjl"
+            android:textColor="#000000" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sajsaksajsaasjl"
+            android:textColor="#000000" />
+    </LinearLayout>
+
+</com.itheima.oschina.ui.view.MyRelative>

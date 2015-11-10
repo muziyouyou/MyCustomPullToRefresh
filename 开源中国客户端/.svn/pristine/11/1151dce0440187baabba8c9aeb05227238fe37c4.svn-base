@@ -1,0 +1,36 @@
+package com.itheima.oschina.ui.adapter;
+
+import com.itheima.oschina.R;
+import com.itheima.oschina.ui.factory.FragmentFactory;
+import com.itheima.oschina.util.CommonUtil;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+
+public class MainFragmentAdapter extends FragmentPagerAdapter {
+
+	private String[] Tabs;
+
+	public MainFragmentAdapter(FragmentManager fm) {
+		super(fm);
+		Tabs = CommonUtil.getStringArray(R.array.mian_menu_arrays);
+	}
+
+	@Override
+	public Fragment getItem(int position) {
+		return FragmentFactory.create(position);
+	}
+	@Override
+	public int getCount() {
+		return Tabs.length;
+	}
+
+	@Override
+	public CharSequence getPageTitle(int position) {
+		return Tabs[position];
+	}
+
+
+}

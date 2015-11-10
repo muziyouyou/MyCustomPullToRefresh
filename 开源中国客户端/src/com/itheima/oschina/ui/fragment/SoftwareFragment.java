@@ -1,0 +1,184 @@
+package com.itheima.oschina.ui.fragment;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import android.os.Handler;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.itheima.oschina.R;
+import com.itheima.oschina.bean.Favorite;
+import com.itheima.oschina.bean.FavoriteList;
+import com.itheima.oschina.ui.adapter.SoftwareAdapter;
+import com.itheima.oschina.ui.fragment.base.BaseFragment;
+import com.itheima.oschina.util.CommonUtil;
+import com.itheima.oschina.util.ToastUtil;
+import com.itheima.oschina.util.XmlUtils;
+
+public class SoftwareFragment extends BaseFragment {
+
+	private ArrayList<Favorite> mList = new ArrayList();
+	private SoftwareAdapter myAdapter;
+	private ListView listView;
+	private PullToRefreshListView pull_refresh_list;
+	private LinearLayout software_foot_item;
+	private ArrayList<Favorite> list;
+	private boolean down = false;
+
+	Handler handler = new Handler(){
+		public void handleMessage(android.os.Message msg) {
+			
+			ToastUtil.showToast("下拉刷新");
+			pull_refresh_list.onRefreshComplete();
+			
+		};
+	};
+	private FavoriteList bean;
+	
+	@Override
+	protected View getSuccessView() {
+			
+		pull_refresh_list = (PullToRefreshListView) View.inflate(getActivity(), R.layout.refresh_listview, null);
+		pull_refresh_list.setMode(Mode.BOTH);
+		software_foot_item = (LinearLayout) View.inflate(getActivity(), R.layout.software_foot_item, null);
+		listView = pull_refresh_list.getRefreshableView();
+	
+		pull_refresh_list.setOnRefreshListener(new OnRefreshListener<ListView>() {
+
+			@Override
+			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+				
+				if(pull_refresh_list.getCurrentMode()==Mode.PULL_FROM_START){
+					
+					CommonUtil.runOnUIThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							
+							
+							down = true;
+							contentPage.loadDataAndRefreshPage();
+							
+						
+							new Thread(new Runnable() {
+								
+								@Override
+								public void run() {
+									
+								handler.postDelayed(new Runnable() {
+				                    @Override
+				                    public void run() {
+				                       
+				                    	handler.sendEmptyMessage(0);
+				                    }
+				                }, 2000);  
+	
+									
+								}
+							});
+							
+						}
+					});
+			
+				}else{
+					
+					down = false;
+					contentPage.loadDataAndRefreshPage();
+					
+				}
+			}
+		});
+		
+		
+		myAdapter = new SoftwareAdapter(mList);
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				
+				
+				
+			}
+			
+		});
+		listView.setAdapter(myAdapter);
+		return pull_refresh_list;
+	}
+
+	@Override
+	protected Object requestData() {
+		list = new ArrayList<Favorite>();
+
+		try {
+			if(down){
+				mList.clear();
+			}
+
+			DefaultHttpClient httpClient = new DefaultHttpClient();
+//			0 1 2 3 4   60
+			// page0.xml  page1.xml
+			// 20 page1.xml  20 % 20 = 1
+			// 40 page2.xml  40 % 20 = 2
+			HttpGet httpGet = new HttpGet("http://192.168.14.101:8080/oschina/list/favorite_list1/page"+mList.size()/20+".xml");
+
+			HttpResponse response = httpClient.execute(httpGet);
+
+			int code = response.getStatusLine().getStatusCode();
+		
+			if(code == 200){
+				InputStream in = response.getEntity().getContent();
+				bean = XmlUtils.toBean(FavoriteList.class,in);
+
+				list.addAll(bean.getList()); 
+				CommonUtil.runOnUIThread(new Runnable() {
+
+					@Override
+					public void run() {
+						if(list!=null){
+							Log.i("JAVA", list.size()+"");	
+							mList.addAll(list);
+							Log.i("JAVA", 2%20+"");	
+							listView.removeFooterView(software_foot_item);
+							if(list.size()==20){
+								myAdapter.notifyDataSetChanged();
+								pull_refresh_list.onRefreshComplete();
+								pull_refresh_list.setMode(Mode.BOTH);
+							}else{
+								Log.i("JAVA", "1111111111111111111");
+								myAdapter.notifyDataSetChanged();
+								listView.addFooterView(software_foot_item);
+								pull_refresh_list.onRefreshComplete();
+								pull_refresh_list.setMode(Mode.PULL_FROM_START);
+							}
+							
+							
+							
+						}
+
+					}
+				});
+			
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		return bean;
+	}
+
+
+}

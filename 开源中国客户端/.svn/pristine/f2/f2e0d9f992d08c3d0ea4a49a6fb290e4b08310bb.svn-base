@@ -1,0 +1,88 @@
+package com.itheima.oschina.ui.activity;
+
+import android.graphics.drawable.AnimationDrawable;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBar.LayoutParams;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
+
+import com.itheima.oschina.R;
+import com.itheima.oschina.util.ToastUtil;
+
+public class MessageDetailActivity extends ActionBarActivity {
+	private AnimationDrawable animationDrawable;
+	Handler handler=new Handler(){
+		
+		@Override
+		public void handleMessage(Message msg) {
+			animationDrawable.stop();
+			ib_action_loading.setImageResource(R.drawable.audio0);
+			ToastUtil.showToast("更新完成");
+		}
+	};
+	private ImageButton ib_action_loading;
+	
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_meaage_detail);
+		//获取V7包的ActionBar
+		ActionBar mActionBar = getSupportActionBar();	
+		//设置显示自定义的ActionBar视图
+		mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+		View view=View.inflate(getApplicationContext(), R.layout.action_custorm, null);
+		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.MATCH_PARENT);
+		mActionBar.setCustomView(view, params);
+		//添加点击事件
+		ImageButton ib_action_custorm = (ImageButton) view.findViewById(R.id.ib_action_custorm);
+		ib_action_custorm.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
+		ib_action_loading = (ImageButton) view.findViewById(R.id.ib_action_loading);
+		ib_action_loading.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				ib_action_loading.setImageResource(R.drawable.action_custom_loading);
+				animationDrawable = (AnimationDrawable) ib_action_loading.getDrawable();
+				animationDrawable.start();
+			}
+		});
+		
+		//停止刷新
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				SystemClock.sleep(5000);
+				handler.sendEmptyMessage(0);
+			}
+		}).start();
+		
+	}
+
+
+
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.meaage_detail, menu);
+		return true;
+	}
+
+}

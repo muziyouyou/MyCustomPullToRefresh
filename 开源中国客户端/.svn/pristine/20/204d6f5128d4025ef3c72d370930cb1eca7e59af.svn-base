@@ -1,0 +1,22 @@
+package com.itheima.oschina.ui.fragment;
+
+import android.view.View;
+
+import com.itheima.oschina.ui.fragment.base.BaseFragment;
+
+public class SoftwareFragment extends BaseFragment {
+
+	@Override
+	protected View getSuccessView() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Object requestData() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+}

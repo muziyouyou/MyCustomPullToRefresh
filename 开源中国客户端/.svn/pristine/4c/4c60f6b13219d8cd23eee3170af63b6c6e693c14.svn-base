@@ -1,0 +1,31 @@
+package com.itheima.oschina.ui.base;
+
+import java.util.ArrayList;
+
+import android.widget.BaseAdapter;
+
+
+
+public abstract class MyBaseAdapter<T> extends BaseAdapter {
+
+	protected ArrayList<T> list;
+	public MyBaseAdapter(ArrayList<T> list){
+		this.list = list;
+	}
+	@Override
+	public int getCount() {
+		return list.size();
+	}
+
+	@Override
+	public Object getItem(int arg0) {
+		return null;
+	}
+
+	@Override
+	public long getItemId(int arg0) {
+		return 0;
+	}
+
+
+}

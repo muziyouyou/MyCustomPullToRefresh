@@ -1,0 +1,62 @@
+package com.itheima.oschina.ui.fragment;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import android.view.View;
+import android.widget.ListView;
+
+import com.itheima.oschina.bean.Favorite;
+import com.itheima.oschina.bean.FavoriteList;
+import com.itheima.oschina.ui.adapter.SoftwareAdapter;
+import com.itheima.oschina.ui.fragment.base.BaseFragment;
+import com.itheima.oschina.util.XmlUtils;
+
+public class SoftwareFragment extends BaseFragment {
+
+	private ArrayList<Favorite> list = new ArrayList();
+
+	@Override
+	protected View getSuccessView() {
+		
+		ListView listView = new ListView(getActivity());
+		
+		SoftwareAdapter myAdapter = new SoftwareAdapter(list);
+		listView.setAdapter(myAdapter);
+		
+		return listView;
+	}
+
+	@Override
+	protected Object requestData() {
+	
+		try {
+			
+			DefaultHttpClient httpClient = new DefaultHttpClient();
+			
+			HttpGet httpGet = new HttpGet("http://192.168.1.106:8080/oschina/list/favorite_list1/page"+0+".xml");
+			
+			HttpResponse response = httpClient.execute(httpGet);
+			
+			int code = response.getStatusLine().getStatusCode();
+			
+			if(code == 200){
+				InputStream in = response.getEntity().getContent();
+				
+				FavoriteList bean = XmlUtils.toBean(FavoriteList.class,in);
+				
+				list  = (ArrayList<Favorite>) bean.getList();
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		return list;
+	}
+
+	
+}

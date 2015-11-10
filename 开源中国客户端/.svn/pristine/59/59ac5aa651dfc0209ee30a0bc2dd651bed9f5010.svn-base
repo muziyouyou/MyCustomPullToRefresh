@@ -1,0 +1,72 @@
+package com.itheima.oschina.ui.fragment;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+
+import android.view.View;
+
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
+import com.itheima.oschina.bean.Active;
+import com.itheima.oschina.bean.ActiveListNote;
+import com.itheima.oschina.http.AllUrl;
+import com.itheima.oschina.http.HttpHelper;
+import com.itheima.oschina.ui.adapter.AttentionMeAdapter;
+import com.itheima.oschina.ui.base.BaseRefreshListFragment;
+import com.itheima.oschina.util.CommonUtil;
+import com.itheima.oschina.util.XmlUtils;
+
+public class AttentionMeFragment extends BaseRefreshListFragment {
+
+	private AttentionMeAdapter attentionMeAdapter;
+	private ActiveListNote activeListNote;
+	private ArrayList<Active> activeList=new ArrayList<Active>();
+	boolean isUp=false;
+	@Override
+	protected View getSuccessView() {
+
+		initRefreshListView(activeList);
+		//设置adapter
+		attentionMeAdapter = new AttentionMeAdapter(activeList);
+		listView.setAdapter(attentionMeAdapter);
+		return refreshListView;
+	}
+
+	@Override
+	protected Object requestData() {
+
+		String url=AllUrl.attention_me;
+		HttpResponse response = HttpHelper.getResponse(url);
+		int statusCode = response.getStatusLine().getStatusCode();
+		if(statusCode==200){
+			InputStream in;
+			try {
+				in = response.getEntity().getContent();
+				activeListNote = XmlUtils.toBean(ActiveListNote.class,in);
+				List<Active> activelist2 = activeListNote.getActivelist();
+				if(activelist2!=null&&activelist2.size()>0){
+					activeList.addAll(activelist2);
+					CommonUtil.runOnUIThread(new Runnable() {
+						@Override
+						public void run() {
+							if(isUp){
+								refreshListView.setMode(Mode.BOTH);
+							}else{
+								refreshListView.setMode(Mode.PULL_FROM_START);
+							}
+							attentionMeAdapter.notifyDataSetChanged();
+							//结束刷新
+							refreshListView.onRefreshComplete();
+						}
+					});
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+		}
+		return activeListNote;
+	}
+
+}

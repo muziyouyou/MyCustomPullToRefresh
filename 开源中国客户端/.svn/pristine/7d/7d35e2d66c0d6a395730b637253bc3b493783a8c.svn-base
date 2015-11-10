@@ -1,0 +1,63 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MessageDetailActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/iv_messagedetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/widget_dface" />
+
+            <TextView
+                android:id="@+id/tv_mesaagedetail_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/iv_messagedetail"
+                android:paddingLeft="5dp"
+                android:paddingTop="10dp"
+                android:text="heima程序员"
+                android:textColor="@color/blue" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_mesaagedetail_author"
+                android:layout_toRightOf="@id/iv_messagedetail"
+                android:paddingLeft="5dp"
+                android:text="3三个月前"
+                android:textColor="@color/black" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:text="互联网沙龙——大数据安全与行业实战分享”活动已经确认，请下载OSC手机客户端现场扫描二维码签到，届时请准时出席:)" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right" >
+
+            <ImageButton
+                android:id="@+id/ib_messagedetail_good"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circlegood"
+                android:src="@drawable/ic_unlike" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</FrameLayout>

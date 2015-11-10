@@ -1,0 +1,38 @@
+package com.itheima.oschina.ui.activity;
+
+import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+
+import com.itheima.oschina.R;
+import com.itheima.oschina.ui.adapter.CollectAdapter;
+import com.itheima.oschina.ui.view.PagerSlidingTab;
+
+public class CollectActivity extends ActionBarActivity {
+	
+	private PagerSlidingTab pst_collect;
+	private ViewPager vp_collect;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.collect_activity);
+		
+		ActionBar actionBar = getSupportActionBar();
+		
+		initView();
+	}
+
+	private void initView() {
+		
+		pst_collect = (PagerSlidingTab) findViewById(R.id.pst_collect);
+		
+		vp_collect = (ViewPager) findViewById(R.id.vp_collect);
+		
+		vp_collect.setAdapter(new CollectAdapter(getSupportFragmentManager()));
+		
+		pst_collect.setViewPager(vp_collect);
+	}
+
+}

@@ -1,0 +1,7 @@
+package com.itheima.oschina.http;
+
+public interface AllUrl {
+
+	String BaseUrl="192.168.14.56";
+	String me_fragment="http://"+BaseUrl+":8080/oschina/information/my_information.xml";
+}
